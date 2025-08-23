@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌤️ Weather App (No JS)</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🌤️ Weather App</h1>
+        
+        <form method="post" action="/weather" class="search-container">
+            <input type="text" name="city" placeholder="Enter city name..." required>
+            <button type="submit">Search</button>
+        </form>
+
+        {% if error %}
+            <div class="error show">{{ error }}</div>
+        {% endif %}
+
+        {% if weather %}
+        <div class="weather-info show">
+            <div class="city-name">{{ weather.city }}</div>
+            <img class="weather-icon" src="http://openweathermap.org/img/wn/{{ weather.icon }}@2x.png" alt="Weather icon">
+            <div class="temperature">{{ weather.temperature }} °C</div>
+            <div class="description">{{ weather.description }}</div>
+            
+            <div class="details">
+                <div class="detail-item">
+                    <div class="detail-label">💧 Humidity</div>
+                    <div class="detail-value">{{ weather.humidity }}%</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">💨 Wind Speed</div>
+                    <div class="detail-value">{{ weather.wind_speed }} m/s</div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2025 Jazib Services INC. All rights reserved.</p>
+            <p>Powered by <a href="https://openweathermap.org/" target="_blank">OpenWeatherMap API</a></p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,41 +1,50 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Form
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
-import uvicorn
 import requests
+import uvicorn
 
 app = FastAPI()
 
+# Static files (CSS)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-@app.get("/")
-async def homepage(request: Request):
-    return FileResponse('static/index.html')
+# Templates
+templates = Jinja2Templates(directory="templates")
 
-apikey = '4e2ef117419dfaa3d936769ec870005c'
+API_KEY = "4e2ef117419dfaa3d936769ec870005c"  # OpenWeather API key
 
-@app.get("/weather")
-async def get_weather(city: str):
-    try:
-        url = f'http://api.openweathermap.org/data/2.5/weather?q={city}&appid={apikey}&units=metric'
-        response = requests.get(url)  
-        response_data = response.json()
-        
-        if response_data.get("cod") != 200:
-            return {"error": "City not found"}
-        
-        weather_data = {
-            "city": response_data["name"],
-            "temperature": response_data["main"]["temp"],
-            "description": response_data["weather"][0]["description"],
-            "icon": response_data["weather"][0]["icon"],
-            "humidity": response_data["main"]["humidity"],
-            "wind_speed": response_data["wind"]["speed"]
-        }
-        return weather_data
-    
-    except Exception as e:
-        return {"error": "Failed to fetch weather data"}
+@app.get("/", response_class=HTMLResponse)
+async def home(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+
+@app.post("/weather", response_class=HTMLResponse)
+async def get_weather(request: Request, city: str = Form(...)):
+    url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric"
+    response = requests.get(url).json()
+
+    if response.get("cod") != 200:
+        return templates.TemplateResponse(
+            "index.html",
+            {"request": request, "error": "❌ City not found!"}
+        )
+
+    weather_data = {
+        "city": response["name"],
+        "temperature": response["main"]["temp"],
+        "description": response["weather"][0]["description"].title(),
+        "icon": response["weather"][0]["icon"],
+        "humidity": response["main"]["humidity"],
+        "wind_speed": response["wind"]["speed"],
+    }
+
+    return templates.TemplateResponse(
+        "index.html",
+        {"request": request, "weather": weather_data}
+    )
+
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)  # Fixed host to "0.0.0.0"
+    uvicorn.run(app, host="0.0.0.0", port=8000)
