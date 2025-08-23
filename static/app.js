@@ -20,7 +20,7 @@
             hideWeatherInfo();
 
             try {
-                // Note: You'll need to modify your FastAPI backend to accept city as a parameter
+                
                 const response = await fetch(`/weather?city=${encodeURIComponent(cityName)}`);
                 const data = await response.json();
 
@@ -44,7 +44,7 @@
             document.getElementById('humidity').textContent = data.humidity + '%';
             document.getElementById('windSpeed').textContent = data.wind_speed + ' m/s';
             
-            // Set weather icon
+          
             const iconUrl = `https://openweathermap.org/img/wn/${data.icon}@2x.png`;
             document.getElementById('weatherIcon').src = iconUrl;
             

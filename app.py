@@ -15,10 +15,10 @@ async def homepage(request: Request):
 apikey = '4e2ef117419dfaa3d936769ec870005c'
 
 @app.get("/weather")
-async def get_weather(city: str):  # Accept city as query parameter
+async def get_weather(city: str):
     try:
         url = f'http://api.openweathermap.org/data/2.5/weather?q={city}&appid={apikey}&units=metric'
-        response = requests.get(url)  # Use requests.get, not request.get
+        response = requests.get(url)  
         response_data = response.json()
         
         if response_data.get("cod") != 200:
