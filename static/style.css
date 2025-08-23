@@ -1,218 +1,160 @@
-   * {
+  * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
-            color: #333;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
         }
 
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            flex: 1;
-        }
-
-        header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
             text-align: center;
-            margin-bottom: 40px;
+            max-width: 400px;
+            width: 100%;
         }
 
         h1 {
+            color: #2d3436;
+            margin-bottom: 25px;
+            font-size: 2.2em;
+        }
+
+        .search-container {
+            margin-bottom: 25px;
+        }
+
+        input[type="text"] {
+            width: 70%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #74b9ff;
+        }
+
+        button {
+            width: 25%;
+            padding: 12px;
+            margin-left: 5px;
+            background: #74b9ff;
             color: white;
-            font-size: 3rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
 
-        .subtitle {
-            color: rgba(255,255,255,0.9);
-            font-size: 1.2rem;
+        button:hover {
+            background: #0984e3;
         }
 
-        .weather-card {
-            background: rgba(255,255,255,0.95);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
-            margin-bottom: 30px;
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
         }
 
-        .current-weather {
-            text-align: center;
-            margin-bottom: 40px;
+        .weather-info {
+            display: none;
+            margin-top: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
         }
 
-        .location {
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 10px;
+        .weather-info.show {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .city-name {
+            font-size: 1.8em;
             color: #2d3436;
+            margin-bottom: 10px;
         }
 
-        .date {
+        .temperature {
+            font-size: 3em;
+            color: #74b9ff;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .description {
+            font-size: 1.2em;
             color: #636e72;
-            font-size: 1.1rem;
-            margin-bottom: 30px;
-        }
-
-        .main-temp {
-            font-size: 5rem;
-            font-weight: 300;
-            color: #2d3436;
-            margin-bottom: 20px;
+            text-transform: capitalize;
+            margin-bottom: 15px;
         }
 
         .weather-icon {
-            font-size: 4rem;
-            margin: 20px 0;
+            width: 80px;
+            height: 80px;
+            margin: 10px 0;
         }
 
-        .weather-desc {
-            font-size: 1.5rem;
-            color: #636e72;
-            margin-bottom: 30px;
-            text-transform: capitalize;
-        }
-
-        .weather-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
+        .details {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
         }
 
         .detail-item {
-            background: rgba(116, 185, 255, 0.1);
-            padding: 20px;
-            border-radius: 15px;
             text-align: center;
         }
 
         .detail-label {
+            font-size: 0.9em;
             color: #636e72;
-            font-size: 0.9rem;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            margin-bottom: 5px;
         }
 
         .detail-value {
-            font-size: 1.5rem;
-            font-weight: 600;
+            font-size: 1.1em;
+            font-weight: bold;
             color: #2d3436;
         }
 
-        .forecast {
-            margin-top: 40px;
+        .error {
+            color: #d63031;
+            background: #fab1a0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
         }
 
-        .forecast-title {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            color: #2d3436;
-            text-align: center;
+        .error.show {
+            display: block;
         }
 
-        .forecast-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
+        .loading {
+            display: none;
+            color: #74b9ff;
+            margin-top: 15px;
         }
 
-        .forecast-item {
-            background: rgba(116, 185, 255, 0.1);
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            transition: transform 0.3s ease;
+        .loading.show {
+            display: block;
         }
-
-        .forecast-item:hover {
-            transform: translateY(-5px);
-        }
-
-        .forecast-day {
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #2d3436;
-        }
-
-        .forecast-icon {
-            font-size: 2rem;
-            margin: 10px 0;
-        }
-
-        .forecast-temps {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .high-temp {
-            font-weight: 600;
-            color: #2d3436;
-        }
-
-        .low-temp {
-            color: #636e72;
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px;
-            color: rgba(255,255,255,0.8);
-            margin-top: auto;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-
-            h1 {
-                font-size: 2.5rem;
-            }
-
-            .main-temp {
-                font-size: 4rem;
-            }
-
-            .weather-card {
-                padding: 30px 20px;
-            }
-
-            .weather-details {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .forecast-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 480px) {
-            .weather-details {
-                grid-template-columns: 1fr;
-            }
-
-            .forecast-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Weather Icons using CSS */
-        .sunny::before { content: "☀️"; }
-        .cloudy::before { content: "☁️"; }
-        .rainy::before { content: "🌧️"; }
-        .snowy::before { content: "❄️"; }
-        .partly-cloudy::before { content: "⛅"; }
-        .thunderstorm::before { content: "⛈️"; }

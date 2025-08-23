@@ -3,105 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WeatherNow - Your Local Weather</title>
+    <title>Weather App</title>
     <link rel="stylesheet" href="/static/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400    ;700&display=swap" rel="stylesheet">    
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>WeatherNow</h1>
-            <p class="subtitle">Your trusted weather companion</p>
-        </header>
+        <h1>🌤️ Weather App</h1>
+        
+        <div class="search-container">
+            <input type="text" id="cityInput" placeholder="Enter city name..." />
+            <button onclick="getWeather()">Search</button>
+        </div>
 
-        <main class="weather-card">
-            <div class="current-weather">
-                <div class="location">New York, NY</div>
-                <div class="date">Saturday, August 23, 2025</div>
-                
-                <div class="main-temp">72°F</div>
-                <div class="weather-icon sunny"></div>
-                <div class="weather-desc">Sunny</div>
+        <div class="loading" id="loading">
+            <p>🔄 Loading weather data...</p>
+        </div>
 
-                <div class="weather-details">
-                    <div class="detail-item">
-                        <div class="detail-label">Feels Like</div>
-                        <div class="detail-value">75°F</div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-label">Humidity</div>
-                        <div class="detail-value">65%</div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-label">Wind Speed</div>
-                        <div class="detail-value">12 mph</div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-label">UV Index</div>
-                        <div class="detail-value">6</div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-label">Visibility</div>
-                        <div class="detail-value">10 mi</div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-label">Pressure</div>
-                        <div class="detail-value">30.2 in</div>
-                    </div>
+        <div class="error" id="error"></div>
+
+        <div class="weather-info" id="weatherInfo">
+            <div class="city-name" id="cityName"></div>
+            <img class="weather-icon" id="weatherIcon" src="" alt="Weather icon">
+            <div class="temperature" id="temperature"></div>
+            <div class="description" id="description"></div>
+            
+            <div class="details">
+                <div class="detail-item">
+                    <div class="detail-label">💧 Humidity</div>
+                    <div class="detail-value" id="humidity"></div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">💨 Wind Speed</div>
+                    <div class="detail-value" id="windSpeed"></div>
                 </div>
             </div>
-
-            <div class="forecast">
-                <h2 class="forecast-title">5-Day Forecast</h2>
-                <div class="forecast-grid">
-                    <div class="forecast-item">
-                        <div class="forecast-day">Sunday</div>
-                        <div class="forecast-icon partly-cloudy"></div>
-                        <div class="forecast-temps">
-                            <span class="high-temp">75°</span>
-                            <span class="low-temp">62°</span>
-                        </div>
-                    </div>
-                    <div class="forecast-item">
-                        <div class="forecast-day">Monday</div>
-                        <div class="forecast-icon rainy"></div>
-                        <div class="forecast-temps">
-                            <span class="high-temp">68°</span>
-                            <span class="low-temp">58°</span>
-                        </div>
-                    </div>
-                    <div class="forecast-item">
-                        <div class="forecast-day">Tuesday</div>
-                        <div class="forecast-icon cloudy"></div>
-                        <div class="forecast-temps">
-                            <span class="high-temp">70°</span>
-                            <span class="low-temp">60°</span>
-                        </div>
-                    </div>
-                    <div class="forecast-item">
-                        <div class="forecast-day">Wednesday</div>
-                        <div class="forecast-icon sunny"></div>
-                        <div class="forecast-temps">
-                            <span class="high-temp">78°</span>
-                            <span class="low-temp">65°</span>
-                        </div>
-                    </div>
-                    <div class="forecast-item">
-                        <div class="forecast-day">Thursday</div>
-                        <div class="forecast-icon thunderstorm"></div>
-                        <div class="forecast-temps">
-                            <span class="high-temp">73°</span>
-                            <span class="low-temp">63°</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
+        </div>
     </div>
-
-    <footer>
-        <p>&copy; 2025 Jazib Services INC. All rights reserved.</p>
-    </footer>
     <script src="/static/app.js"></script>
 </body>
 </html>

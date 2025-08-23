@@ -1,24 +1,41 @@
-from fastapi import FastAPI
-from pyowm import OWM
-from pyowm.utils.config import get_default_config
-from pyowm.utils import timestamps
-from fastapi.middleware.cors import CORSMiddleware
-import uvicorn
-import setuptools
-import os
+from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
-from fastapi.templating import Jinja2Templates
-from fastapi import Request
+import uvicorn
 import requests
 
 app = FastAPI()
-try:
-    owm = OWM('YOUR_OWM_API_KEY')  # Replace with your OWM API key
-except Exception as e:
-    print(f"Error initializing OWM: {e}")
+
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
 @app.get("/")
-async def read_index(request: Request):
+async def homepage(request: Request):
     return FileResponse('static/index.html')
 
+apikey = '4e2ef117419dfaa3d936769ec870005c'
+
+@app.get("/weather")
+async def get_weather(city: str):  # Accept city as query parameter
+    try:
+        url = f'http://api.openweathermap.org/data/2.5/weather?q={city}&appid={apikey}&units=metric'
+        response = requests.get(url)  # Use requests.get, not request.get
+        response_data = response.json()
+        
+        if response_data.get("cod") != 200:
+            return {"error": "City not found"}
+        
+        weather_data = {
+            "city": response_data["name"],
+            "temperature": response_data["main"]["temp"],
+            "description": response_data["weather"][0]["description"],
+            "icon": response_data["weather"][0]["icon"],
+            "humidity": response_data["main"]["humidity"],
+            "wind_speed": response_data["wind"]["speed"]
+        }
+        return weather_data
+    
+    except Exception as e:
+        return {"error": "Failed to fetch weather data"}
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)  # Fixed host to "0.0.0.0"
