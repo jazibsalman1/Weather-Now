@@ -4,16 +4,19 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 import requests
 import uvicorn
+import os
 
 app = FastAPI()
 
-# Static files (CSS)
+# Static files (CSS, JS, images)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# Templates
+# Templates (HTML)
 templates = Jinja2Templates(directory="templates")
 
-API_KEY = "4e2ef117419dfaa3d936769ec870005c"  # OpenWeather API key
+# OpenWeather API key
+API_KEY = "4e2ef117419dfaa3d936769ec870005c"
+
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
@@ -47,4 +50,6 @@ async def get_weather(request: Request, city: str = Form(...)):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", --port $PORT)
+    # Render requires binding to 0.0.0.0 and the PORT env variable
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
