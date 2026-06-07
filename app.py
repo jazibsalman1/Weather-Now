@@ -20,7 +20,7 @@ API_KEY = "4e2ef117419dfaa3d936769ec870005c"
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse(requests, "index.html", {"request": request})
 
 
 @app.post("/weather", response_class=HTMLResponse)
@@ -43,7 +43,7 @@ async def get_weather(request: Request, city: str = Form(...)):
         "wind_speed": response["wind"]["speed"],
     }
 
-    return templates.TemplateResponse(
+    return templates.TemplateResponse(requests, 
         "index.html",
         {"request": request, "weather": weather_data}
     )
